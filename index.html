@@ -14,30 +14,35 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --ink: #0f1014;
-            --ink-soft: #161922;
-            --blue-muted: #243046;
-            --blue-accent: #3d4f6b;
+            --ink: #0d0f13;
+            --ink-deep: #08090c;
+            --blue-muted: #1b2333;
+            --blue-bright: #3a4c6b;
+            --blue-accent: #6d8ac7;
             --text-primary: #f5f7fb;
-            --text-secondary: #a5afc7;
-            --surface: rgba(255,255,255,0.02);
-            --surface-strong: rgba(255,255,255,0.04);
-            --border: rgba(255,255,255,0.08);
-            --radius: 18px;
+            --text-secondary: #a0a9c2;
+            --surface: rgba(255, 255, 255, 0.025);
+            --surface-strong: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --radius: 20px;
         }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(150deg, var(--ink) 0%, #10131d 45%, #1b2333 100%);
+            background: var(--ink-deep);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
         }
-        .bg-gradient {
+        .bg-modern {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at top, rgba(61,79,107,0.25), transparent 55%);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(61, 92, 140, 0.28), transparent 55%),
+                radial-gradient(circle at 80% 10%, rgba(17, 25, 40, 0.6), transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(58, 76, 107, 0.4), transparent 55%),
+                linear-gradient(140deg, #050609 0%, #0c0f16 55%, #151b27 100%);
             z-index: -2;
         }
         .grain {
@@ -45,13 +50,13 @@
             inset: 0;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.08;
-            mix-blend-mode: soft-light;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            mix-blend-mode: screen;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--blue-muted); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 999px; }
         #root { min-height: 100vh; }
         .container {
             max-width: 1280px;
@@ -67,80 +72,86 @@
             margin-bottom: 3rem;
         }
         .hero img {
-            width: 220px;
+            width: 180px;
             height: auto;
-            object-fit: contain;
         }
         .hero p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
         .hero h2 {
             font-weight: 600;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--text-primary);
         }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.25rem;
-            margin-bottom: 3.5rem;
+            margin-bottom: 3rem;
         }
         .stat-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.5rem;
+            padding: 1.4rem;
         }
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--text-secondary);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.45rem;
         }
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.85rem;
             font-weight: 600;
             color: var(--text-primary);
         }
         .clients-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             margin-bottom: 1.5rem;
-            flex-wrap: wrap;
             gap: 1rem;
-        }
-        .clients-header h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
+            flex-wrap: wrap;
         }
         .clients-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1rem;
         }
         .client-card {
             background: var(--surface-strong);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.25rem;
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.7rem;
         }
         .client-top {
             display: flex;
-            justify-content: space-between;
-            gap: 0.75rem;
+            align-items: center;
+            gap: 0.9rem;
+        }
+        .client-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .client-info h4 {
             font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.1rem;
         }
         .client-info span {
             font-size: 0.85rem;
@@ -151,21 +162,21 @@
             color: var(--text-secondary);
         }
         .client-package {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-primary);
         }
         .client-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 0.75rem;
+            padding-top: 0.7rem;
             border-top: 1px solid var(--border);
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
         .pill {
             font-size: 0.75rem;
-            padding: 0.1rem 0.55rem;
+            padding: 0.15rem 0.6rem;
             border-radius: 999px;
             border: 1px solid var(--border);
             color: var(--text-secondary);
@@ -176,14 +187,10 @@
             color: var(--text-secondary);
             font-size: 0.8rem;
         }
-        @media (max-width: 600px) {
-            .hero img { width: 160px; }
-            .hero h2 { font-size: 1.4rem; }
-        }
     </style>
 </head>
 <body>
-    <div class="bg-gradient"></div>
+    <div class="bg-modern"></div>
     <div class="grain"></div>
     <div id="root"></div>
 
@@ -235,12 +242,13 @@
         const ClientCard = ({ client, index }) => (
             <motion.div
                 className="client-card"
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ translateY: -6 }}
+                transition={{ duration: 0.45, delay: index * 0.04 }}
+                whileHover={{ translateY: -4 }}
             >
                 <div className="client-top">
+                    <div className="client-avatar">{client.name.charAt(0)}</div>
                     <div className="client-info">
                         <h4>{client.name}</h4>
                         <span>{client.location}</span>
@@ -258,26 +266,26 @@
 
         const App = () => {
             const totalRevenue = useMemo(() => clients.reduce((sum, c) => sum + c.revenue, 0), []);
-            const activeClients = clients.length;
+            const locations = new Set(clients.map(c => c.location.split(',')[0])).size;
 
             return (
                 <div className="container">
                     <motion.section
                         className="hero"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <img src="./logo-full.png" alt="Deyem Project" />
+                        <img src="./logo-eye.png" alt="Deyem Project" />
                         <p>Content Studio Dashboard · Febbraio 2026</p>
                         <h2>Operativo su Milano, Pavia, Bergamo e El Paso</h2>
                     </motion.section>
 
                     <div className="stats-grid">
-                        <StatCard label="Clienti Attivi" value={activeClients} />
+                        <StatCard label="Clienti Attivi" value={clients.length} />
                         <StatCard label="Revenue Mensile" value={totalRevenue} prefix="€" delay={0.1} />
                         <StatCard label="Contenuti / Settimana" value={18} delay={0.2} />
-                        <StatCard label="Città Coperte" value={5} delay={0.3} />
+                        <StatCard label="Città Coperte" value={locations} delay={0.3} />
                     </div>
 
                     <div className="clients-header">
