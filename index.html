@@ -6,439 +6,298 @@
     <title>Deyem Project | Content Studio Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
-            --bg-dark: #1a1a1f;
-            --bg-darker: #121216;
-            --blue-muted: #4a5568;
-            --blue-accent: #6366f1;
-            --blue-glow: rgba(99, 102, 241, 0.15);
-            --text-primary: #f7fafc;
-            --text-secondary: #a0aec0;
-            --text-muted: #718096;
-            --surface: rgba(255, 255, 255, 0.03);
-            --surface-hover: rgba(255, 255, 255, 0.06);
-            --border: rgba(255, 255, 255, 0.08);
-            --radius: 20px;
-            --radius-lg: 28px;
+            --ink: #0f1014;
+            --ink-soft: #161922;
+            --blue-muted: #243046;
+            --blue-accent: #3d4f6b;
+            --text-primary: #f5f7fb;
+            --text-secondary: #a5afc7;
+            --surface: rgba(255,255,255,0.02);
+            --surface-strong: rgba(255,255,255,0.04);
+            --border: rgba(255,255,255,0.08);
+            --radius: 18px;
         }
-        
         html { scroll-behavior: smooth; }
-        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-darker);
+            min-height: 100vh;
+            background: linear-gradient(150deg, var(--ink) 0%, #10131d 45%, #1b2333 100%);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            min-height: 100vh;
         }
-        
-        /* Animated gradient background */
         .bg-gradient {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(74, 85, 104, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 30% at 50% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(61,79,107,0.25), transparent 55%);
             z-index: -2;
-            animation: gradientShift 20s ease-in-out infinite;
         }
-        
-        @keyframes gradientShift {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        
-        /* Grain texture overlay */
         .grain {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-            opacity: 0.04;
+            inset: 0;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.08;
+            mix-blend-mode: soft-light;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
-        
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-darker); }
-        ::-webkit-scrollbar-thumb { background: var(--blue-muted); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--blue-accent); }
-        
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--blue-muted); border-radius: 999px; }
         #root { min-height: 100vh; }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 3rem clamp(1.5rem, 3vw, 2.5rem) 4rem;
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+        .hero img {
+            width: 220px;
+            height: auto;
+            object-fit: contain;
+        }
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .hero h2 {
+            font-weight: 600;
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 1.25rem;
+            margin-bottom: 3.5rem;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .clients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .clients-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .client-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .client-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .client-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+        .client-info span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .client-type {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .client-package {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        .client-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .pill {
+            font-size: 0.75rem;
+            padding: 0.1rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        @media (max-width: 600px) {
+            .hero img { width: 160px; }
+            .hero h2 { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
     <div class="bg-gradient"></div>
     <div class="grain"></div>
     <div id="root"></div>
-    
+
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
-        const { motion, AnimatePresence } = window.Motion;
-        
-        // Dati clienti
+        const { useEffect, useState, useMemo } = React;
+        const { motion } = window.Motion;
+
         const clients = [
-            { id: 1, name: "Artica", location: "Melegnano", type: "Gelateria", revenue: 300, package: "1 reel + 1 post/week", status: "active", color: "#f59e0b" },
-            { id: 2, name: "Black Bull Pub", location: "Pavia", type: "English Pub", revenue: 300, package: "1 reel + 1 post/week", status: "active", color: "#ef4444" },
-            { id: 3, name: "Francesco Mastrandrea", location: "Pavia", type: "Actor/Storyteller", revenue: 400, package: "1 reel every 10 days", status: "active", color: "#8b5cf6" },
-            { id: 4, name: "Muuuteca", location: "Pavia", type: "Grill & Wine", revenue: 500, package: "1 reel + 2 posts/week", status: "active", color: "#10b981" },
-            { id: 5, name: "Bled Wild", location: "Bergamo", type: "Rapper", revenue: 500, package: "1 reel every 5 days", status: "active", color: "#ec4899" },
-            { id: 6, name: "NOA Beauty Wellness", location: "Pavia", type: "Beauty Center", revenue: 500, package: "1 reel + 1 post/week", status: "opening", note: "Opens March", color: "#06b6d4" },
-            { id: 7, name: "La Bella Mbrìana", location: "Montebello", type: "Neapolitan Restaurant", revenue: 450, package: "1 reel + 1 post/week", status: "active", color: "#f97316" },
-            { id: 8, name: "Milano Street Barber", location: "Melegnano", type: "Barbershop", revenue: 300, package: "1 reel + 1 post/week", status: "active", color: "#3b82f6" },
-            { id: 9, name: "915 Languages", location: "El Paso, TX", type: "Language School", revenue: 400, package: "2 reels/week", status: "active", note: "Client self-films", color: "#14b8a6" }
+            { id: 1, name: "Artica", location: "Melegnano", type: "Gelateria", revenue: 300, package: "1 reel + 1 post / week", status: "Attivo" },
+            { id: 2, name: "Black Bull Pub", location: "Pavia", type: "English Pub", revenue: 300, package: "1 reel + 1 post / week", status: "Attivo" },
+            { id: 3, name: "Francesco Mastrandrea", location: "Pavia", type: "Actor / Storyteller", revenue: 400, package: "1 reel every 10 days", status: "Attivo" },
+            { id: 4, name: "Muuuteca", location: "Pavia", type: "Grill & Wine", revenue: 500, package: "1 reel + 2 posts / week", status: "Attivo" },
+            { id: 5, name: "Bled Wild", location: "Bergamo", type: "Rapper", revenue: 500, package: "1 reel every 5 days", status: "Attivo" },
+            { id: 6, name: "NOA Beauty Wellness", location: "Pavia", type: "Beauty Center", revenue: 500, package: "1 reel + 1 post / week", status: "Opens March" },
+            { id: 7, name: "La Bella Mbrìana", location: "Montebello", type: "Neapolitan Restaurant", revenue: 450, package: "1 reel + 1 post / week", status: "Rebrand" },
+            { id: 8, name: "Milano Street Barber", location: "Melegnano", type: "Barbershop", revenue: 300, package: "1 reel + 1 post / week", status: "Attivo" },
+            { id: 9, name: "915 Languages", location: "El Paso, TX", type: "Language School", revenue: 400, package: "2 reels / week", status: "Remote" }
         ];
-        
-        // Componente per animare i numeri
-        const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
-            const [count, setCount] = useState(0);
-            
+
+        const AnimatedValue = ({ value, prefix = "" }) => {
+            const [display, setDisplay] = useState(0);
             useEffect(() => {
-                const duration = 1500;
-                const steps = 60;
-                const increment = value / steps;
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= value) {
-                        setCount(value);
-                        clearInterval(timer);
-                    } else {
-                        setCount(Math.floor(current));
-                    }
-                }, duration / steps);
-                
-                return () => clearInterval(timer);
+                let frame = 0;
+                const frames = 40;
+                const target = value;
+                const step = () => {
+                    frame++;
+                    const progress = Math.min(frame / frames, 1);
+                    setDisplay(Math.round(progress * target));
+                    if (progress < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
             }, [value]);
-            
-            return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+            return <span>{prefix}{display.toLocaleString()}</span>;
         };
-        
-        // Card cliente
-        const ClientCard = ({ client, index }) => {
-            return (
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.08 }}
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    style={{
-                        background: 'var(--surface)',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius)',
-                        padding: '1.5rem',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        backdropFilter: 'blur(20px)'
-                    }}
-                >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: index * 0.08 + 0.2 }}
-                        style={{
-                            position: 'absolute',
-                            top: '1rem',
-                            right: '1rem',
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: client.status === 'active' ? '#10b981' : '#f59e0b',
-                            boxShadow: `0 0 12px ${client.status === 'active' ? '#10b981' : '#f59e0b'}`
-                        }}
-                    />
-                    
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                        <div style={{
-                            width: '48px',
-                            height: '48px',
-                            borderRadius: '14px',
-                            background: `linear-gradient(135deg, ${client.color}40 0%, ${client.color}20 100%)`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '1.25rem',
-                            fontWeight: '700',
-                            color: client.color,
-                            border: `1px solid ${client.color}30`
-                        }}>
-                            {client.name.charAt(0)}
-                        </div>
-                        <div>
-                            <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>
-                                {client.name}
-                            </h3>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                {client.location}
-                            </p>
-                        </div>
+
+        const StatCard = ({ label, value, prefix, delay = 0 }) => (
+            <motion.div
+                className="stat-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay }}
+            >
+                <div className="stat-label">{label}</div>
+                <div className="stat-value"><AnimatedValue value={value} prefix={prefix} /></div>
+            </motion.div>
+        );
+
+        const ClientCard = ({ client, index }) => (
+            <motion.div
+                className="client-card"
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ translateY: -6 }}
+            >
+                <div className="client-top">
+                    <div className="client-info">
+                        <h4>{client.name}</h4>
+                        <span>{client.location}</span>
                     </div>
-                    
-                    <div style={{ marginBottom: '1rem' }}>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
-                            {client.type}
-                        </p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                            {client.package}
-                        </p>
-                        {client.note && (
-                            <span style={{
-                                display: 'inline-block',
-                                marginTop: '0.5rem',
-                                padding: '0.25rem 0.75rem',
-                                background: 'rgba(245, 158, 11, 0.15)',
-                                color: '#f59e0b',
-                                borderRadius: '6px',
-                                fontSize: '0.75rem',
-                                fontWeight: '500'
-                            }}>
-                                {client.note}
-                            </span>
-                        )}
-                    </div>
-                    
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        paddingTop: '1rem',
-                        borderTop: '1px solid var(--border)'
-                    }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Monthly</span>
-                        <span style={{
-                            fontSize: '1.25rem',
-                            fontWeight: '700',
-                            color: 'var(--text-primary)',
-                            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent'
-                        }}>
-                            €{client.revenue}
-                        </span>
-                    </div>
-                </motion.div>
-            );
-        };
-        
-        // Stat Card
-        const StatCard = ({ label, value, prefix = "", suffix = "", icon, delay = 0 }) => {
-            return (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay }}
-                    whileHover={{ scale: 1.03 }}
-                    style={{
-                        background: 'var(--surface)',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius)',
-                        padding: '1.5rem',
-                        backdropFilter: 'blur(20px)'
-                    }}
-                >
-                    <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{icon}</div>
-                    <div style={{
-                        fontSize: '2rem',
-                        fontWeight: '800',
-                        color: 'var(--text-primary)',
-                        marginBottom: '0.25rem'
-                    }}>
-                        <AnimatedCounter value={value} prefix={prefix} suffix={suffix} />
-                    </div>
-                    <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{label}</div>
-                </motion.div>
-            );
-        };
-        
-        // App principale
+                    <span className="pill">{client.status}</span>
+                </div>
+                <div className="client-type">{client.type}</div>
+                <div className="client-package">{client.package}</div>
+                <div className="client-footer">
+                    <span>Mensile</span>
+                    <strong style={{ color: 'var(--text-primary)', fontSize: '1rem' }}>€{client.revenue}</strong>
+                </div>
+            </motion.div>
+        );
+
         const App = () => {
-            const [scrolled, setScrolled] = useState(false);
-            
-            useEffect(() => {
-                const handleScroll = () => setScrolled(window.scrollY > 50);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-            
             const totalRevenue = useMemo(() => clients.reduce((sum, c) => sum + c.revenue, 0), []);
-            const activeClients = clients.filter(c => c.status === 'active').length;
-            
+            const activeClients = clients.length;
+
             return (
-                <div style={{ minHeight: '100vh' }}>
-                    {/* Header */}
-                    <motion.header
-                        initial={{ y: -100 }}
-                        animate={{ y: 0 }}
+                <div className="container">
+                    <motion.section
+                        className="hero"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        style={{
-                            position: 'sticky',
-                            top: 0,
-                            zIndex: 100,
-                            padding: '1.25rem 2rem',
-                            background: scrolled ? 'rgba(18, 18, 22, 0.9)' : 'transparent',
-                            backdropFilter: scrolled ? 'blur(20px)' : 'none',
-                            borderBottom: scrolled ? '1px solid var(--border)' : 'none',
-                            transition: 'all 0.3s ease'
-                        }}
                     >
-                        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <motion.div
-                                    whileHover={{ rotate: 180 }}
-                                    transition={{ duration: 0.6 }}
-                                    style={{
-                                        width: '44px',
-                                        height: '44px',
-                                        borderRadius: '12px',
-                                        background: 'linear-gradient(135deg, #6366f1 0%, #4a5568 100%)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        boxShadow: '0 0 30px rgba(99, 102, 241, 0.3)'
-                                    }}
-                                >
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8Z"/>
-                                        <circle cx="12" cy="12" r="3"/>
-                                    </svg>
-                                </motion.div>
-                                <div>
-                                    <h1 style={{
-                                        fontSize: '1.25rem',
-                                        fontWeight: '700',
-                                        background: 'linear-gradient(135deg, #f7fafc 0%, #a0aec0 100%)',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent'
-                                    }}>
-                                        Deyem Project
-                                    </h1>
-                                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Content Studio Dashboard</p>
-                                </div>
-                            </div>
-                            
-                            <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.3 }}
-                                    style={{ textAlign: 'right' }}
-                                >
-                                    <div style={{
-                                        fontSize: '1.5rem',
-                                        fontWeight: '700',
-                                        color: 'var(--text-primary)'
-                                    }}>
-                                        €{totalRevenue.toLocaleString()}
-                                    </div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Monthly Revenue</div>
-                                </motion.div>
-                                
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{
-                                        padding: '0.75rem 1.5rem',
-                                        background: 'linear-gradient(135deg, #6366f1 0%, #4a5568 100%)',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '12px',
-                                        fontWeight: '600',
-                                        fontSize: '0.9rem',
-                                        cursor: 'pointer',
-                                        boxShadow: '0 4px 20px rgba(99, 102, 241, 0.3)'
-                                    }}
-                                >
-                                    + New Client
-                                </motion.button>
-                            </div>
-                        </div>
-                    </motion.header>
-                    
-                    {/* Main Content */}
-                    <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-                        {/* Stats Grid */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                            gap: '1.5rem',
-                            marginBottom: '3rem'
-                        }}>
-                            <StatCard label="Active Clients" value={activeClients} icon="👥" delay={0.1} />
-                            <StatCard label="Monthly Revenue" value={totalRevenue} prefix="€" icon="💰" delay={0.2} />
-                            <StatCard label="Content Pieces/Week" value={18} icon="🎬" delay={0.3} />
-                            <StatCard label="Locations" value={5} icon="📍" delay={0.4} />
-                        </div>
-                        
-                        {/* Section Title */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 }}
-                            style={{ marginBottom: '1.5rem' }}
-                        >
-                            <h2 style={{
-                                fontSize: '1.5rem',
-                                fontWeight: '700',
-                                color: 'var(--text-primary)',
-                                marginBottom: '0.5rem'
-                            }}>
-                                Client Portfolio
-                            </h2>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                                Managing {clients.length} clients across Northern Italy and US
-                            </p>
-                        </motion.div>
-                        
-                        {/* Clients Grid */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                            gap: '1.5rem'
-                        }}>
-                            {clients.map((client, index) => (
-                                <ClientCard key={client.id} client={client} index={index} />
-                            ))}
-                        </div>
-                        
-                        {/* Footer */}
-                        <motion.footer
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
-                            style={{
-                                marginTop: '4rem',
-                                padding: '2rem 0',
-                                textAlign: 'center',
-                                borderTop: '1px solid var(--border)'
-                            }}
-                        >
-                            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                Deyem Project © 2024 — Content Studio
-                            </p>
-                        </motion.footer>
-                    </main>
+                        <img src="./logo-full.png" alt="Deyem Project" />
+                        <p>Content Studio Dashboard · Febbraio 2026</p>
+                        <h2>Operativo su Milano, Pavia, Bergamo e El Paso</h2>
+                    </motion.section>
+
+                    <div className="stats-grid">
+                        <StatCard label="Clienti Attivi" value={activeClients} />
+                        <StatCard label="Revenue Mensile" value={totalRevenue} prefix="€" delay={0.1} />
+                        <StatCard label="Contenuti / Settimana" value={18} delay={0.2} />
+                        <StatCard label="Città Coperte" value={5} delay={0.3} />
+                    </div>
+
+                    <div className="clients-header">
+                        <h3>Portafoglio Clienti</h3>
+                        <span className="pill">Aggiornato · Feb 2026</span>
+                    </div>
+
+                    <div className="clients-grid">
+                        {clients.map((client, idx) => (
+                            <ClientCard client={client} index={idx} key={client.id} />
+                        ))}
+                    </div>
+
+                    <footer>
+                        Deyem Project © 2026 · Content Studio Dashboard
+                    </footer>
                 </div>
             );
         };
-        
+
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
